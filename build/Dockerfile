@@ -17,7 +17,11 @@ RUN yarn build
 FROM node:20-alpine AS runner
 WORKDIR /app
 
-# Copy only runtime files
+# Install important tools (curl, vim, git)
+RUN apk update && \
+    apk add --no-cache curl vim git
+
+# Copy only runtime files from the builder stage
 COPY --from=builder /app ./
 
 # Expose the port (adjust if different in config.ts)
